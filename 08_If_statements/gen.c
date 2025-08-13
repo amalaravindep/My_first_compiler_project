@@ -18,6 +18,9 @@ static int genIFAST(struct ASTnode *n)
 	genAST(n->left,Lfalse,n->op);
 	genfreeregs();
 
+	genAST(n->mid,NOREG,n->op);
+	genfreeregs();
+
 	if(n->right)
 		cgjump(Lend);
 
