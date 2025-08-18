@@ -65,6 +65,26 @@ struct ASTnode *while_statement(void)
 	return(mkastnode(A_WHILE,condAST,NULL,bodyAST,0));
 }
 
+struct ASTnode *dowhile_statement(void)
+{
+  struct ASTnode *condAST, *bodyAST;
+  match(T_DOWHILE, "do");
+
+  bodyAST = compound_statement();
+
+  match(T_WHILE,"while");
+  lparen();
+  condAST = binexpr(0);
+  if (condAST->op < A_EQ || condAST->op > A_GE)
+    fatal("Bad comparison operator");
+  rparen();
+
+  semi();
+
+
+  return (mkastnode(A_DOWHILE, condAST, NULL, bodyAST, 0));
+}
+
 struct ASTnode *compound_statement(void)
 {
 	struct ASTnode *left=NULL;
@@ -89,6 +109,9 @@ struct ASTnode *compound_statement(void)
 				break;
 			case T_WHILE:
 				tree=while_statement();
+				break;
+			case T_DOWHILE:
+				tree=dowhile_statement();
 				break;
 			case T_RBRACE:
 				rbrace();
