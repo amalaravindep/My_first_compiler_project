@@ -56,7 +56,26 @@ struct ASTnode *binexpr(int ptp)
 	{
 		scan(&Token);
 		right=binexpr(OpPrec[tokentype]);
-		left=mkastnode(arithop(tokentype),left,right,0);
+		if(left->op == T_INTLIT && right->op == T_INTLIT)
+		{
+			if(tokentype == A_EQ || tokentype == A_NE || tokentype == A_GE ||
+			tokentype == A_LE || tokentype == A_LT || tokentype == A_GT)
+			{
+				int result=0;
+					switch(tokentype)
+					{
+						case A_EQ: result=left->v.intvalue == right->v.intvalue;break;
+						case A_NE: result=left->v.intvalue != right->v.intvalue;break;
+						case A_GE: result=left->v.intvalue >= right->v.intvalue;break;
+						case A_LE: result=left->v.intvalue <= right->v.intvalue;break;
+						case A_GT: result=left->v.intvalue >  right->v.intvalue;break;
+						case A_LT: result=left->v.intvalue <  right->v.intvalue;break;
+					}
+					left=mkastleaf(T_INTLIT,result);
+			}
+			else
+				mkastnode(tokentype,left,right,0);
+		}
 		tokentype=Token.token;
 		if(tokentype==T_SEMI)
 			return (left);
