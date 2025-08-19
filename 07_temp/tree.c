@@ -27,12 +27,3 @@ struct ASTnode *mkastunary(int op, struct ASTnode *left,int intvalue)
 {
 	return (mkastnode(op,left,NULL,intvalue));
 }
-
-void freeast(struct ASTnode *n) 
-{
-    if (n == NULL) return;
-    freeast(n->left);
-    freeast(n->right);
-    free(n);
-}
-
