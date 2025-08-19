@@ -167,7 +167,7 @@ void cgjump(int l)
 	fprintf(Outfile,"\tjmp\tL%d\n",l);
 }
 
-static char *invcmplist[]={"jne","je","jge","jle","jg","jl"};
+static char *invcmplist[]={"je","jne","je","je","jle","jge"};
 
 int cgcompare_and_jump(int ASTop,int r1,int r2,int label)
 {

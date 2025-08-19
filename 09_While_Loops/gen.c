@@ -41,16 +41,17 @@ static int genWHILE(struct ASTnode *n)
 
 	Lstart=label();
 	Lend=label();
+	cgjump(Lend);
 	cglabel(Lstart);
-
-	genAST(n->left,Lend,n->op);
-	genfreeregs();
 
 	genAST(n->right,NOREG,n->op);
 	genfreeregs();
 
-	cgjump(Lstart);
 	cglabel(Lend);
+
+	genAST(n->left,Lstart,n->op);
+	genfreeregs();
+
 	return(NOREG);
 }
 
